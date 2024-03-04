@@ -14,6 +14,6 @@ struct data_s
 
 }   data_t;
 
-
+void    init_values(data_t *philo, char **argv);
 
 #endif

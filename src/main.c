@@ -2,7 +2,9 @@
 
 int  main(int argc, char **argv)
 {
+    data_t **vars;
 
+    init_values(vars, argv);
 }
 
 void    init_values(data_t *philo, char **argv)
