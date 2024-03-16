@@ -40,3 +40,5 @@ void    *my_thread_to_think(data_t *philo, void *args)
     printf("Philosopher %d is thinking\n", (int) args);
     return (NULL);
 }
+
+//ideee faire une fonction qui regarde le temps de chaque philo et quand il mange remet a 0 mais par contre si il depasse alors dit qu'il est mort 
