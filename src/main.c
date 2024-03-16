@@ -3,6 +3,9 @@
 int  main(int argc, char **argv)
 {
     data_t **vars;
+    timeval_t time;
+    gettimeofday(&time, NULL);
+
     memset(&vars, 0, sizeof(vars));
     init_values(vars, argv);
 }
@@ -21,7 +24,27 @@ void    init_values(data_t *philo, char **argv)
 }
 
 //initialiser la vie de chaque philo avec une boucle qui donne temps + temps de mort et a chaque fois qu'il mange remettre + temps de mort a life 
+void    init_philo(data_t *philo, timeval_t time)
+{
+    int i;
 
+    i = 0;
+    while (i < philo->number_of_philosophers)
+    {
+        philo->id_philo[i] = malloc(sizeof(t_philo));
+        i++;
+    }
+    i = 0;
+    while (i < philo->number_of_philosophers)
+    {
+        philo->id_philo[i]->life = time;
+        philo->id_philo[i]->life.tv_usec += 800 * 1000;
+        philo->id_philo[i]->fork_left = 1;
+        philo->id_philo[i]->fork_right = 0;
+        i++;
+    } // apres pour les faire mourir regarder si leurs temps est plus petit ou egal au temps actuel. il doit toujours etre plus grand.
+    return ;
+}
 
 void    *my_thread_to_sleep(data_t *philo, void *args)
 {
