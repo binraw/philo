@@ -3,7 +3,7 @@
 int  main(int argc, char **argv)
 {
     data_t **vars;
-
+    memset(&vars, 0, sizeof(vars));
     init_values(vars, argv);
 }
 
@@ -16,7 +16,7 @@ void    init_values(data_t *philo, char **argv)
     if (argc == 6)
         philo->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
     else
-        philo->number_of_times_each_philosopher_must_eat = 0;
+        philo->number_of_times_each_philosopher_must_eat = 0; //potentielemente inutile j'ai fais un memset
 }
 
 
