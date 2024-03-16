@@ -13,24 +13,31 @@ void    init_values(data_t *philo, char **argv)
     philo->time_to_die = ft_atoi(argv[2]);
     philo->time_to_eat = ft_atoi(argv[3]);
     philo->time_to_sleep = ft_atoi(argv[4]);
+    philo->id_philo = malloc(sizeof(t_philo) * philo->number_of_philosophers);
     if (argc == 6)
         philo->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
     else
         philo->number_of_times_each_philosopher_must_eat = 0; //potentielemente inutile j'ai fais un memset
 }
 
+//initialiser la vie de chaque philo avec une boucle qui donne temps + temps de mort et a chaque fois qu'il mange remettre + temps de mort a life 
+
 
 void    *my_thread_to_sleep(data_t *philo, void *args)
 {
-    usleep(philo->time_to_sleep); // mettre une valeur
+   
     printf("Philosopher %d is sleeping\n", (int) args ); // mettre la position du philo
+    philo->id_philo[(int)args]->sleep = 1;
+    usleep(philo->time_to_sleep); // mettre une valeur
+    philo->id_philo[(int)args]->sleep = 0;
     return (NULL);
 }
 
 void    *my_thread_to_eat(data_t *philo, void *args)
 {
-    usleep(philo->time_to_eat);
     printf("Philosopher %d is eating\n", (int) args );
+    usleep(philo->time_to_eat);
+    //au dessus enlever une fork a voisin de droite puis lui redonner
     return (NULL);
 }
 
@@ -42,3 +49,8 @@ void    *my_thread_to_think(data_t *philo, void *args)
 }
 
 //ideee faire une fonction qui regarde le temps de chaque philo et quand il mange remet a 0 mais par contre si il depasse alors dit qu'il est mort 
+
+void    *my_thread_to_die(data_t *philo, void *args)
+{
+
+}

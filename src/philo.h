@@ -6,6 +6,7 @@
 
 struct data_s
 {
+    philo_t		*id_philo;
     int number_of_philosophers;
     int time_to_die;
     int time_to_eat;
@@ -13,6 +14,18 @@ struct data_s
     int number_of_times_each_philosopher_must_eat;
 
 }   data_t;
+
+struct philo
+{
+    int 			number;
+    int             fork_left;
+    int             fork_right;
+    int             hunger;
+    int             life;
+    int             sleep;
+
+} philo_t;
+
 
 void    init_values(data_t *philo, char **argv);
 
