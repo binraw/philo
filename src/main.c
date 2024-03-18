@@ -75,5 +75,23 @@ void    *my_thread_to_think(data_t *philo, void *args)
 
 void    *my_thread_to_die(data_t *philo, void *args)
 {
-
+    int i;
+    int	y;
+	timeval_t new_time;
+	
+    i = 0;
+	y = 0;
+    while (y != philo->number_of_philosophers)
+	{
+    	while (i < philo->number_of_philosophers)
+    	{
+			if (philo->id_philo[i]->life !=  gettimeofday(&new_time, NULL)) // trouver le moyen de mettre l'heure actuel et de refresh pour savoir quand un philo est mort
+            {
+				printf("Philosopher %d is dead", philo->id_philo[i]);
+				y++;
+			}
+			i++
+    	}
+		i = 0;
+	}
 }

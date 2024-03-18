@@ -34,5 +34,10 @@ struct timeval {
 
 
 void    init_values(data_t *philo, char **argv);
+void    init_philo(data_t *philo, timeval_t time);
+void    *my_thread_to_sleep(data_t *philo, void *args);
+void    *my_thread_to_eat(data_t *philo, void *args);
+void    *my_thread_to_think(data_t *philo, void *args);
+void    *my_thread_to_die(data_t *philo, void *args);
 
 #endif
