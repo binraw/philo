@@ -6,7 +6,7 @@ SRCS_FILE = main.c
 
 CC = cc
 MD = mkdir -p
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -lpthread
 
 
 DIR_SRC = src/

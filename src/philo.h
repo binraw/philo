@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/18 15:49:20 by rtruvelo          #+#    #+#             */
+/*   Updated: 2024/03/19 14:07:54 by rtruvelo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
 
 # include "../lib/libft/libft.h"
+# include <pthread.h>
 
 struct data_s
 {
@@ -34,10 +47,10 @@ struct timeval {
 
 
 void    init_values(data_t *philo, char **argv);
-void    init_philo(data_t *philo, timeval_t time);
-void    *my_thread_to_sleep(data_t *philo, void *args);
-void    *my_thread_to_eat(data_t *philo, void *args);
-void    *my_thread_to_think(data_t *philo, void *args);
-void    *my_thread_to_die(data_t *philo, void *args);
+void    init_philo(data_t *philo);
+void    *my_thread_to_sleep(void *philo);
+void    *my_thread_to_eat(void *philo);
+void    *my_thread_to_think(void *philo);
+void    *my_thread_to_die(void *philo);
 
 #endif
