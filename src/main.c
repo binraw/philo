@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:49:12 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/19 13:07:29 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/20 12:40:38 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,7 @@ int  main(int argc, char **argv)
 	init_values(vars, argv);
 	init_philo(&vars);
 
-	pthread_create(&thread1, NULL, my_thread_to_die, vars);
-    
-	pthread_create(&thread2, NULL, my_thread_to_eat, vars.id_philo[i]);
-	pthread_join(thread1, NULL);
-	pthread_join(thread2, NULL);
+	
     
 }
 
@@ -64,8 +60,8 @@ void    init_philo(data_t *philo)
     {
         philo->id_philo[i]->life = time;
         philo->id_philo[i]->life.tv_usec += 800 * 1000;
-        philo->id_philo[i]->fork_left = 1;
-        philo->id_philo[i]->fork_right = 0;
+        philo->id_philo[i]->fork_left = 0;
+        philo->id_philo[i]->fork_right = 1;
         philo->id_philo[i]->number = i;
         i++;
     } // apres pour les faire mourir regarder si leurs temps est plus petit ou egal au temps actuel. il doit toujours etre plus grand.
@@ -87,7 +83,8 @@ void    *my_thread_to_eat(void *philo)
     (data_t *) philo;
     printf("Philosopher %d is eating\n", (int) args);
     usleep(philo->time_to_eat);
-    //au dessus enlever une fork a voisin de droite puis lui redonner
+    philo->fork_left = 0;
+    //au dessus enlever une fork a voisin de gauche puis lui redonner
     return (NULL);
 }
 
@@ -99,7 +96,7 @@ void    *my_thread_to_think(void *philo)
     return (NULL);
 }
 
-//ideee faire une fonction qui regarde le temps de chaque philo et quand il mange remet a 0 mais par contre si il depasse alors dit qu'il est mort 
+//idee faire une fonction qui regarde le temps de chaque philo et quand il mange remet a 0 mais par contre si il depasse alors dit qu'il est mort 
 
 void    *my_thread_to_die(void *philo)
 {
