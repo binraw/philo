@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:49:12 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/20 12:40:38 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:44:19 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ int  main(int argc, char **argv)
 	memset(&vars, 0, sizeof(vars));
 	init_values(vars, argv);
 	init_philo(&vars);
+    if (vars.last == 1)
+    {
+        
+    }
 
 	
     
@@ -56,16 +60,20 @@ void    init_philo(data_t *philo)
         i++;
     }
     i = 0;
-    while (i < philo->number_of_philosophers)
+    while (i <= philo->number_of_philosophers)
     {
         philo->id_philo[i]->life = time;
         philo->id_philo[i]->life.tv_usec += 800 * 1000;
         philo->id_philo[i]->fork_left = 0;
         philo->id_philo[i]->fork_right = 1;
         philo->id_philo[i]->number = i;
+        if (i == philo->number_of_philosophers)
+            philo->last = 1;
         i++;
     } // apres pour les faire mourir regarder si leurs temps est plus petit ou egal au temps actuel. il doit toujours etre plus grand.
+    philo->info = philo;
     return ;
+    
 }
 
 void    *my_thread_to_sleep(void *philo)

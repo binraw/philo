@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:39:34 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/20 14:10:36 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:39:03 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,31 @@ int process_diner(data_t *philo)
 {
     size_t i;
     size_t y;
+    pthread_t thread_ids[philo->number_of_philosophers];
     
     i = 0;
     y = 1;
     if ((philo->number_of_philosophers % 2) == 0)
     {
-        pthread_create(&thread1, NULL, my_thread_to_think, philo->id_philo[philo->number_of_philosophers]);
         while (i < philo->number_of_philosophers)
         {
-            pthread_create(&thread2, NULL, my_thread_to_eat, philo->id_philo[i]);
-            pthread_create(&thread3, NULL, my_thread_to_think, philo->id_philo[y]);
-            i += 2;
-            y += 2;
+            pthread_create(&thread_ids[i], NULL, "mettre ici la routine", philo->id_philo[i]);
+            i++;
         } // savoir si il faut attendre la fin des threads pour envoyer les prochains
     }
-    pthread_create(&thread1, NULL, my_thread_to_die, vars);
-	pthread_join(thread1, NULL);
-	pthread_join(thread2, NULL);
+    // pthread_create(&thread1, NULL, my_thread_to_die, vars);
+    i = 0;
+    y = 1;
+     while (i < philo->number_of_philosophers)
+     {
+        pthread_join(thread_ids[i], NULL);
+        i++;
+     }
+	
 }
+
+
+//  cre
 
 //faire le plan suivant le nombre de philo
 
