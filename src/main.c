@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:49:12 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/21 15:44:19 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:58:54 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,13 @@ int  main(int argc, char **argv)
 	memset(&vars, 0, sizeof(vars));
 	init_values(vars, argv);
 	init_philo(&vars);
-    if (vars.last == 1)
-    {
-        
-    }
+
 
 	
     
 }
+
+// pour que tout les philos est une fourchette utiliser (i + 1) % data->number_of_philosopher.fork_left
 
 void    init_values(data_t *philo, char **argv)
 {
@@ -67,8 +66,6 @@ void    init_philo(data_t *philo)
         philo->id_philo[i]->fork_left = 0;
         philo->id_philo[i]->fork_right = 1;
         philo->id_philo[i]->number = i;
-        if (i == philo->number_of_philosophers)
-            philo->last = 1;
         i++;
     } // apres pour les faire mourir regarder si leurs temps est plus petit ou egal au temps actuel. il doit toujours etre plus grand.
     philo->info = philo;
