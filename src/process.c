@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:39:34 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/21 15:39:03 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:06:17 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int process_diner(data_t *philo)
     {
         while (i < philo->number_of_philosophers)
         {
-            pthread_create(&thread_ids[i], NULL, "mettre ici la routine", philo->id_philo[i]);
+            pthread_create(&thread_ids[i], NULL, &ft_routine, (void)&philo->id_philo[i]);
             i++;
         } // savoir si il faut attendre la fin des threads pour envoyer les prochains
     }
@@ -39,6 +39,22 @@ int process_diner(data_t *philo)
 	
 }
 
+
+void    ft_routine(void *args)
+{
+    philo_t *philo;
+
+    philo = (philo_t *)args;
+    if (philo->number & 1)
+        usleep(50);
+    while (philo->info->dead != 1)
+    {
+        my_thread_to_eat(philo);
+        my_thread_to_sleep(philo);
+        my_thread_to_think(philo); // faire ne boucle qui continu cette action tant que les forks ne sont pas dispo
+        
+    }
+}
 
 //  cre
 

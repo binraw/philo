@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:49:12 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/22 14:58:54 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/25 13:53:43 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,37 +73,37 @@ void    init_philo(data_t *philo)
     
 }
 
-void    *my_thread_to_sleep(void *philo)
+void    *my_thread_to_sleep(philo_t *philo)
 {
    (data_t *) philo;
-    printf("Philosopher %d is sleeping\n", ); // mettre la position du philo
-    philo->id_philo[(int)args]->sleep = 1;
-    usleep(philo->time_to_sleep); // mettre une valeur
-    philo->id_philo[(int)args]->sleep = 0;
+    printf("Philosopher %d is sleeping\n", philo->number);
+    philo->sleep = 1;
+    usleep(philo->info->time_to_sleep);
+    philo->sleep = 0;
     return (NULL);
 }
 
-void    *my_thread_to_eat(void *philo)
+void    *my_thread_to_eat(philo_t *philo)
 {
-    (data_t *) philo;
-    printf("Philosopher %d is eating\n", (int) args);
-    usleep(philo->time_to_eat);
-    philo->fork_left = 0;
-    //au dessus enlever une fork a voisin de gauche puis lui redonner
-    return (NULL);
+    pthread_mutex_lock(philo->fork_left);
+    printf("le philosopher %d taken a fork left", philo->number);
+    pthread_mutex_lock(philo->fork_right);
+    printf("le philosopher %d taken a fork right", philo->number);
+
+
+    return ;
 }
 
-void    *my_thread_to_think(void *philo)
+void    *my_thread_to_think(philo_t *philo)
 {
-    (data_t *) philo;
     usleep(50);
-    printf("Philosopher %d is thinking\n", (int) args);
+    printf("Philosopher %d is thinking\n", philo->number);
     return (NULL);
 }
 
 //idee faire une fonction qui regarde le temps de chaque philo et quand il mange remet a 0 mais par contre si il depasse alors dit qu'il est mort 
 
-void    *my_thread_to_die(void *philo)
+void    *my_thread_to_die(philo_t *philo)
 {
     int i;
     int	y;
@@ -112,18 +112,20 @@ void    *my_thread_to_die(void *philo)
     (data_t *) philo;
     i = 0;
 	y = 0;
-    while (y != philo->number_of_philosophers)
+    while (y != philo->info->number_of_philosophers)
 	{
-    	while (i < philo->number_of_philosophers)
+    	while (i < philo->info->number_of_philosophers)
     	{
-			if (philo->id_philo[i]->life !=  gettimeofday(&new_time, NULL)) // trouver le moyen de mettre l'heure actuel et de refresh pour savoir quand un philo est mort
+			if (philo->info->id_philo[i]->life !=  gettimeofday(&new_time, NULL)) // trouver le moyen de mettre l'heure actuel et de refresh pour savoir quand un philo est mort
             {
-				printf("Philosopher %d is dead", philo->id_philo[i]);
-				y++;
+				printf("Philosopher %d is dead", philo->info->id_philo[i]);
+                philo->dead = 1;
 			}
-			i++
+			i++;
     	}
 		i = 0;
+        y++;
 	}
+    return (NULL);
 }
 //

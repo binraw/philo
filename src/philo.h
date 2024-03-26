@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:49:20 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/21 15:42:38 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/25 13:25:26 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ struct data_s
     int time_to_sleep;
     int number_of_times_each_philosopher_must_eat;
     int             last;
+    int dead;
+    pthread_mutex_t *forks;
 
 }   data_t;
 
@@ -33,8 +35,8 @@ struct philo
 {
    data_t           *info;
     int 			number;
-    int             fork_left;
-    int             fork_right;
+    pthread_mutex_t            *fork_left;
+    pthread_mutex_t           *fork_right;
     int             hunger;
     timeval_t       life;
     int             sleep;
