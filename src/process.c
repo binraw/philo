@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:39:34 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/26 11:06:17 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/26 15:53:07 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int process_diner(data_t *philo)
 {
-    size_t i;
-    size_t y;
+   int i;
+    int y;
     pthread_t thread_ids[philo->number_of_philosophers];
     
     i = 0;
@@ -24,11 +24,10 @@ int process_diner(data_t *philo)
     {
         while (i < philo->number_of_philosophers)
         {
-            pthread_create(&thread_ids[i], NULL, &ft_routine, (void)&philo->id_philo[i]);
+            pthread_create(&thread_ids[i], NULL, ft_routine, (void *)&philo->id_philo[i]);
             i++;
-        } // savoir si il faut attendre la fin des threads pour envoyer les prochains
+        }
     }
-    // pthread_create(&thread1, NULL, my_thread_to_die, vars);
     i = 0;
     y = 1;
      while (i < philo->number_of_philosophers)
@@ -36,24 +35,29 @@ int process_diner(data_t *philo)
         pthread_join(thread_ids[i], NULL);
         i++;
      }
+	 return (0);
 	
 }
 
 
-void    ft_routine(void *args)
+void    *ft_routine(void *args)
 {
     philo_t *philo;
 
     philo = (philo_t *)args;
+	if (args == NULL) {
+        fprintf(stderr, "Erreur : argument NULL dans ft_routine\n");
+        return (NULL);
+    }
     if (philo->number & 1)
         usleep(50);
     while (philo->info->dead != 1)
     {
-        my_thread_to_eat(philo);
-        my_thread_to_sleep(philo);
-        my_thread_to_think(philo); // faire ne boucle qui continu cette action tant que les forks ne sont pas dispo
-        
+        my_thread_to_take_forks(philo);
+        my_thread_to_sleep(philo); // faire sauter dormir si il n'ont pas manger 
+        my_thread_to_think(philo);
     }
+	return (NULL);
 }
 
 //  cre

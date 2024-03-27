@@ -1,19 +1,19 @@
 NAME = philo
 
 
-SRCS_FILE = main.c 
+SRCS_FILE = main.c process.c utils.c
 
 
 CC = cc
 MD = mkdir -p
-CFLAGS = -Wall -Wextra -Werror -g -lpthread
+CFLAGS = -Wall -Wextra -Werror -g 
 
 
 DIR_SRC = src/
 DIR_OBJ = .object/
 
 
-LIBFT = ./lib/libft/libft.a
+
 
 OBJS = $(patsubst %.c, ${DIR_OBJ}%.o, ${SRCS})
 SRCS = $(addprefix ${DIR_SRC},${SRCS_FILE})
@@ -22,26 +22,21 @@ OBJS_BONUS = $(patsubst %.c, ${DIR_OBJ_BONUS}%.o, ${SRCS_BONUS})
 
 RM = rm -Rf
 
-all: libft ${NAME}
+all: ${NAME}
 
-${NAME}: ${OBJS} ${LIBFT}
-	$(CC) $(OBJS) $(LIBFT) -o $(NAME)
+${NAME}: ${OBJS} 
+	$(CC) $(OBJS) -o $(NAME)
 
 
-${DIR_OBJ}%.o: %.c ${DIR_SRC}/pipex.h Makefile
+${DIR_OBJ}%.o: %.c ${DIR_SRC}/philo.h Makefile
 	mkdir -p $(shell dirname $@)
 	$(CC) ${CFLAGS} -c $< -o $@
 
 
-libft: 
-	${MAKE} -C ./lib/libft all
-
 clean:
-	${MAKE} -C ./lib/libft clean
 	${RM} ${DIR_OBJ}
 
 fclean: clean
-	${MAKE} -C ./lib/libft fclean
 	${RM} ${NAME}
 
 re: fclean all
