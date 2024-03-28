@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:49:12 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/26 16:03:19 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:36:20 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int  main(int argc, char **argv)
 	memset(&vars, 0, sizeof(vars));
 	init_values(&vars, argv, argc);
 	init_philo(&vars);
+    process_diner(&vars);
 }
 
 // pour que tout les philos est une fourchette utiliser (i + 1) % data->number_of_philosopher.fork_left
@@ -29,6 +30,7 @@ void    init_values(data_t *data, char **argv, int argc)
     data->time_to_die = ft_atoi(argv[2]);
     data->time_to_eat = ft_atoi(argv[3]);
     data->time_to_sleep = ft_atoi(argv[4]);
+    data->all_ready = false;
     data->id_philo = malloc(sizeof(philo_t) * data->number_of_philosophers);
     if (argc == 6)
         data->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
@@ -40,20 +42,22 @@ void    init_values(data_t *data, char **argv, int argc)
 void    init_philo(data_t *data)
 {
     int i;
-    struct timeval time;
+    // struct timeval time;
+    
+
 
     i = 0;
-    gettimeofday(&time, NULL);
+    // gettimeofday(&time, NULL);
     while (i < data->number_of_philosophers)
     {
         data->id_philo[i] = malloc(sizeof(philo_t));
         i++;
     }
     i = 0;
-    while (i <= data->number_of_philosophers)
+    while (i < data->number_of_philosophers)
     {
-        data->id_philo[i]->life = time;
-        data->id_philo[i]->life.tv_usec += 800 * 1000;
+    
+        data->id_philo[i]->life = data->time_to_die * 1000;
         data->id_philo[i]->fork_left = &(data->forks[i]);
         data->id_philo[i]->fork_right = &(data->forks[(i + 1) % data->number_of_philosophers]);
         data->id_philo[i]->number = i;
@@ -93,11 +97,10 @@ void	philo_eating(philo_t *philo)
 	long long milliseconds;
 
 	gettimeofday(&new_time, NULL);
-	milliseconds = new_time.tv_sec * 1000LL + new_time.tv_usec / 1000;
+	milliseconds = get_current_milliseconds();
 	printf("philosopher %d eating", philo->number);
 	philo->hunger++;
-	philo->life.tv_sec = milliseconds / 1000;
-	philo->life.tv_usec = (milliseconds % 1000) * 1000;
+	philo->life= milliseconds;
 	usleep(philo->info->time_to_eat);
 	pthread_mutex_unlock(philo->fork_left);
 	pthread_mutex_unlock(philo->fork_right);
@@ -116,20 +119,18 @@ int    my_thread_to_die(philo_t *philo)
 {
     int i;
     int	y;
-	struct timeval new_time;
 	long long current_milliseconds;
 	long long philo_life_milliseconds;
 
     i = 0;
 	y = 0;
-	gettimeofday(&new_time, NULL);
-	
-	current_milliseconds = new_time.tv_sec * 1000LL + new_time.tv_usec / 1000;
+
+	current_milliseconds = get_current_milliseconds();
     while (y != philo->info->number_of_philosophers)
 	{
     	while (i < philo->info->number_of_philosophers)
     	{
-			philo_life_milliseconds = philo->info->id_philo[i]->life.tv_sec * 1000LL + philo->info->id_philo[i]->life.tv_usec / 1000;
+			philo_life_milliseconds = philo->info->id_philo[i]->life;
 			if (philo_life_milliseconds < current_milliseconds) 
             {
 				printf("Philosopher %d is dead", i);
@@ -143,4 +144,3 @@ int    my_thread_to_die(philo_t *philo)
 	}
 	return (0);
 }
-//

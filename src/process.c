@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:39:34 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/26 15:53:07 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:40:31 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@ int process_diner(data_t *philo)
     y = 1;
     if ((philo->number_of_philosophers % 2) == 0)
     {
-        while (i < philo->number_of_philosophers)
+        while (i <= philo->number_of_philosophers)
         {
             pthread_create(&thread_ids[i], NULL, ft_routine, (void *)&philo->id_philo[i]);
+            if (i == philo->number_of_philosophers)
+                philo->all_ready = true;
             i++;
         }
     }
+  
     i = 0;
     y = 1;
      while (i < philo->number_of_philosophers)
@@ -45,6 +48,10 @@ void    *ft_routine(void *args)
     philo_t *philo;
 
     philo = (philo_t *)args;
+    while (philo->info->all_ready != true)
+    {
+        usleep(42);
+    }
 	if (args == NULL) {
         fprintf(stderr, "Erreur : argument NULL dans ft_routine\n");
         return (NULL);
@@ -54,8 +61,11 @@ void    *ft_routine(void *args)
     while (philo->info->dead != 1)
     {
         my_thread_to_take_forks(philo);
+        my_thread_to_die(philo);
         my_thread_to_sleep(philo); // faire sauter dormir si il n'ont pas manger 
+        my_thread_to_die(philo);
         my_thread_to_think(philo);
+        my_thread_to_die(philo);
     }
 	return (NULL);
 }

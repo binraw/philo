@@ -25,7 +25,7 @@ RM = rm -Rf
 all: ${NAME}
 
 ${NAME}: ${OBJS} 
-	$(CC) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME) -lpthread
 
 
 ${DIR_OBJ}%.o: %.c ${DIR_SRC}/philo.h Makefile

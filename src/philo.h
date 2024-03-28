@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:49:20 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/26 15:23:14 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:35:41 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 typedef struct philo_s philo_t;
 
@@ -34,6 +35,7 @@ typedef struct data_s
     int             last;
     int dead;
     pthread_mutex_t *forks;
+    bool all_ready;
 
 }   data_t;
 
@@ -44,7 +46,7 @@ typedef struct philo_s
     pthread_mutex_t            *fork_left;
     pthread_mutex_t           *fork_right;
     int             hunger;
-   	struct timeval life;
+   	int life;
     int             sleep;
     pthread_t thread_id;
 
@@ -66,5 +68,6 @@ int   my_thread_to_die(philo_t *philo);
 int	ft_atoi(char *str);
 void    *ft_routine(void *args);
 void	philo_eating(philo_t *philo);
-
+int process_diner(data_t *philo);
+int get_current_milliseconds(void);
 #endif

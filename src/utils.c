@@ -6,9 +6,11 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:44:12 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/26 11:47:53 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/27 14:42:34 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philo.h"
 
 static int	white_space(char *str)
 {
@@ -50,4 +52,11 @@ int	ft_atoi(char *str)
 		i++;
 	}
 	return ((int)result);
+}
+
+int get_current_milliseconds(void) 
+{
+    struct timeval current_time;
+    gettimeofday(&current_time, NULL);
+    return (current_time.tv_sec * 1000 + current_time.tv_usec / 1000);
 }
