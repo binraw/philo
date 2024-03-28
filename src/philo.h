@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:49:20 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/28 14:19:10 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:34:51 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,5 @@ void	philo_eating(philo_t *philo);
 int process_diner(data_t *philo);
 int get_current_milliseconds(void);
 void	free_destroy(data_t *data);
+void    stop_routine(data_t *data,  pthread_t *thread_ids);
 #endif

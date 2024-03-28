@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:39:34 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/28 15:25:51 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:46:57 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,31 @@ int process_diner(data_t *data)
          i++;
     }
         data->all_ready = true;
-  
-    i = 0;
-    y = 1;
-     while (i < data->number_of_philosophers)
-     {
-        pthread_join(thread_ids[i], NULL);
-        i++;
-     }
-     free_destroy(data);
+  stop_routine(data, thread_ids);
+    // i = 0;
+    // y = 1;
+    //  while (i < data->number_of_philosophers)
+    //  {
+    //     pthread_join(thread_ids[i], NULL);
+    //     i++;
+    //  }
+    //  free_destroy(data);
 	 return (0);
 	
 }
 
-// void    stop_routine(data_t *data,  pthread_t thread_ids)
-// {
-    
-// }
+void    stop_routine(data_t *data,  pthread_t *thread_ids)
+{
+    int i;
+
+    i = 0;
+    while (i < data->number_of_philosophers)
+    {
+        pthread_join(thread_ids[i], NULL);
+        i++;
+    }
+    free_destroy(data);
+}
 
 
 void    *ft_routine(void *args)
@@ -69,11 +77,9 @@ void    *ft_routine(void *args)
         my_thread_to_take_forks(philo);
         if (my_thread_to_die(philo) == -1)
             return (NULL);
-        // my_thread_to_sleep(philo); // faire sauter dormir si il n'ont pas manger 
-        // my_thread_to_die(philo);
         my_thread_to_think(philo);
        if (my_thread_to_die(philo) == -1)
-            return (NULL);
+            return (NULL);  //regler le probleme de quand ils meurs stopper la section
     }
 	return (NULL);
 }
