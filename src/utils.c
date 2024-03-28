@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 11:44:12 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/27 14:42:34 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/28 14:07:59 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,16 @@ int get_current_milliseconds(void)
     struct timeval current_time;
     gettimeofday(&current_time, NULL);
     return (current_time.tv_sec * 1000 + current_time.tv_usec / 1000);
+}
+
+void	free_destroy(data_t *data)
+{
+	int i;
+
+	i = 0;
+	while(i <= data->number_of_philosophers)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		i++;
+	}
 }

@@ -6,66 +6,74 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:39:34 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/27 15:40:31 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:25:51 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int process_diner(data_t *philo)
+int process_diner(data_t *data)
 {
    int i;
     int y;
-    pthread_t thread_ids[philo->number_of_philosophers];
+    pthread_t thread_ids[data->number_of_philosophers];
     
     i = 0;
     y = 1;
-    if ((philo->number_of_philosophers % 2) == 0)
+    // if ((philo->number_of_philosophers % 2) == 0)
+    //     usleep(1);
+    
+    while (i < data->number_of_philosophers)
     {
-        while (i <= philo->number_of_philosophers)
-        {
-            pthread_create(&thread_ids[i], NULL, ft_routine, (void *)&philo->id_philo[i]);
-            if (i == philo->number_of_philosophers)
-                philo->all_ready = true;
-            i++;
-        }
+        pthread_create(&thread_ids[i], NULL, &ft_routine, (void *)data->id_philo[i]);
+          
+         i++;
     }
+        data->all_ready = true;
   
     i = 0;
     y = 1;
-     while (i < philo->number_of_philosophers)
+     while (i < data->number_of_philosophers)
      {
         pthread_join(thread_ids[i], NULL);
         i++;
      }
+     free_destroy(data);
 	 return (0);
 	
 }
+
+// void    stop_routine(data_t *data,  pthread_t thread_ids)
+// {
+    
+// }
 
 
 void    *ft_routine(void *args)
 {
     philo_t *philo;
 
-    philo = (philo_t *)args;
-    while (philo->info->all_ready != true)
-    {
-        usleep(42);
-    }
-	if (args == NULL) {
+    if (args == NULL) {
         fprintf(stderr, "Erreur : argument NULL dans ft_routine\n");
-        return (NULL);
+        return NULL;
     }
+
+    philo = (philo_t *)args;
+        while (!(*(philo->all_ready)))
+            ;
+
     if (philo->number & 1)
         usleep(50);
     while (philo->info->dead != 1)
     {
         my_thread_to_take_forks(philo);
-        my_thread_to_die(philo);
-        my_thread_to_sleep(philo); // faire sauter dormir si il n'ont pas manger 
-        my_thread_to_die(philo);
+        if (my_thread_to_die(philo) == -1)
+            return (NULL);
+        // my_thread_to_sleep(philo); // faire sauter dormir si il n'ont pas manger 
+        // my_thread_to_die(philo);
         my_thread_to_think(philo);
-        my_thread_to_die(philo);
+       if (my_thread_to_die(philo) == -1)
+            return (NULL);
     }
 	return (NULL);
 }

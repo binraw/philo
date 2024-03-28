@@ -6,7 +6,7 @@
 /*   By: rtruvelo <rtruvelo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:49:20 by rtruvelo          #+#    #+#             */
-/*   Updated: 2024/03/27 15:35:41 by rtruvelo         ###   ########.fr       */
+/*   Updated: 2024/03/28 14:19:10 by rtruvelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct philo_s
     int             hunger;
    	int life;
     int             sleep;
+    bool *all_ready;
+
     pthread_t thread_id;
 
 }   philo_t;
@@ -70,4 +72,5 @@ void    *ft_routine(void *args);
 void	philo_eating(philo_t *philo);
 int process_diner(data_t *philo);
 int get_current_milliseconds(void);
+void	free_destroy(data_t *data);
 #endif
